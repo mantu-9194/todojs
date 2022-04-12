@@ -175,3 +175,80 @@ function delBox(id) {
   showBoxes();
   isEmptyOrNot();
 }
+
+function addList(itemId) {
+  container.classList.add("blur");
+  selected.classList.add("blur");
+
+  let itemModal = document.createElement("div");
+  itemModal.className = "add-item-modal";
+  itemModal.innerHTML = `
+  <h2 id="l2">Add New Item</h2>
+  <input type="text" id="item"  />
+  <div class="btn">
+    <button class="item-add-btn">add</button>
+    <button class="item-close-btn">close</button>
+  </div>`;
+
+  let body = document.body;
+  body.appendChild(itemModal);
+
+  let itemAddBtn = document.querySelector(".item-add-btn");
+  let itemClosebtn = document.querySelector(".item-close-btn");
+  let inputItem = document.getElementById("item");
+
+  itemAddBtn.addEventListener("click", () => {
+    itemModal.classList.add("popout");
+    const newList = inputItem.value;
+    if (newList) {
+      boxes.forEach((box) => {
+        if (box.id === itemId) {
+          box.lists.push(newList);
+        }
+      });
+
+
+      setTimeout(() => {
+        showBoxes();
+        getSbox(itemId);
+      }, 350);
+    }
+
+    setTimeout(() => {
+      itemModal.classList.remove("popout");
+      container.classList.remove("blur");
+      selected.classList.remove("blur");
+      itemModal.remove();
+    }, 300);
+  });
+
+  itemClosebtn.addEventListener("click", () => {
+    itemModal.classList.add("popout");
+
+    setTimeout(() => {
+      itemModal.classList.remove("popout");
+      container.classList.remove("blur");
+      selected.classList.remove("blur");
+      itemModal.remove();
+    }, 300);
+  });
+}
+
+
+let getThis = (id) => {
+  getSbox(id);
+
+  selected.classList.remove("d-none");
+  container.classList.add("d-none");
+};
+
+function goBack() {
+  selected.classList.add("d-none");
+  container.classList.remove("d-none");
+}
+
+function taskDone(id, user_id) {
+  document.getElementById(id).classList.add("task-done");
+  document.querySelector(`#${id} span`).classList.add("d-none");
+  getSbox(user_id);
+}
